@@ -131,7 +131,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        arch: [ x64 , x86]
+        arch: [ x64]
         python-version: [3.6, 3.7]
     steps:
     - uses: actions/checkout@v2
@@ -166,6 +166,11 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: skia-${{ runner.os }}-${{ matrix.arch }}
+        path: skia\out\Release
     - name: Build python binding
       env:
         DISTUTILS_USE_SDK: 1
