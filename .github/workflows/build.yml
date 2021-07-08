@@ -39,6 +39,7 @@ jobs:
         install: >-
           mingw-w64-x86_64-toolchain
           mingw-w64-x86_64-python2
+          git
     - name: Build Skia
       shell: msys2 {0}
       run: |
