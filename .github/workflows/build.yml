@@ -21,17 +21,12 @@ jobs:
         submodules: true
     - name: Print submodule commits
       run: git submodule status > submodule.txt
-    - uses: actions/cache@v1
-      id: cache
-      with:
-        path: skia\out\Release
-        key: ${{ runner.os }}-${{ matrix.arch }}-skia-out-0-${{ hashFiles('submodule.txt') }}
-      if: steps.cache.outputs.cache-hit != 'true'
+
     - name: Set PATH
       run: |
         echo "$pwd\depot_tools"
         echo "$pwd\depot_tools" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-      if: steps.cache.outputs.cache-hit != 'true'
+
     - uses: msys2/setup-msys2@v2
       with:
         release: false
@@ -50,7 +45,7 @@ jobs:
         bin/gn gen out/Release --args='cc="gcc" cxx="g++" is_official_build=true skia_enable_tools=true skia_use_system_libjpeg_turbo=false skia_use_system_libwebp=false skia_use_system_libpng=false skia_use_system_icu=false skia_use_system_harfbuzz=false skia_use_system_expat=false skia_use_system_zlib=false target_cpu="x86_64"'
         ninja -C out/Release skia skia.h experimental_svg_model
         cd ..
-      if: steps.cache.outputs.cache-hit != 'true'
+
     - name: Upload
       uses: actions/upload-artifact@v2
       with:
